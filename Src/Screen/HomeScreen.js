@@ -1,19 +1,20 @@
-import {View, Text, ImageBackground} from 'react-native';
-import React from 'react';
+import {View, Text, ImageBackground,} from 'react-native';
+import React, { useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
-import AlarmScreen from './AlarmScreen';
+import { FAB, Portal, Provider } from 'react-native-paper';
+
+
 
 const iconSize = 30;
 const iconRightMargin = 15;
 
 export const DrawerContent = () => {
-  const navigation = useNavigation();
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={{flex: 1, backgroundColor: 'pink'}}>
+      <View style={{flex: 1, backgroundColor: '#ffe4e1'}}>
         <ImageBackground
           source={require('../../assets/pasta2.png')}
           style={{width: '100%', height: 300}}
@@ -76,7 +77,7 @@ export const DrawerContent = () => {
               color="#26201e"
               style={{marginLeft: 5}}
             />
-            <Text style={{marginLeft: 12, color: '#26201e'}}>Dil</Text>
+            <Text style={{marginLeft: 12, color: '#26201e'}}> Dil </Text>
           </TouchableOpacity>
         </View>
 
@@ -95,11 +96,11 @@ export const DrawerContent = () => {
               color="#26201e"
               style={{marginLeft: 5}}
             />
-            <Text style={{marginLeft: 12, color: '#26201e'}}>Yardım</Text>
+            <Text style={{marginLeft: 12, color: '#26201e'}}> Yardım </Text>
           </TouchableOpacity>
         </View>
 
-        <View style={{flex: 1, backgroundColor: 'pink'}}>
+        <View style={{flex: 1, backgroundColor: '#ffe4e1'}}>
           <TouchableOpacity
             style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => {}}>
@@ -111,8 +112,22 @@ export const DrawerContent = () => {
   );
 };
 
+
+
+
 export default function HomeScreen() {
+  
   const navigation = useNavigation();
+
+  const DatePage = () => {
+    navigation.navigate("DateScreen")
+  }
+
+
+
+  const [state, setState] = useState(false);
+  const onStateChange = ({ open }) => setState({ open });
+
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -151,26 +166,27 @@ export default function HomeScreen() {
         onPress={() => navigation.navigate('AlarmScreen')}
       />
 
-
-      <ScrollView>
-        <View
-          style={{flex: 1, backgroundColor: 'darksalmon', marginBottom: 20}}>
-          <Text>birinci flex</Text>
-          <Text>birinci flex</Text>
-
-          <Text>birinci flex</Text>
-
-
-        </View>
-        <View style={{flex: 1,backgroundColor:"pink"}}>
-          <Text>ikinci flex</Text>
-          <Text>ikinci flex</Text>
-
-          <Text>ikinci flex</Text>
-
-
-        </View>
-      </ScrollView>
+<SafeAreaView style={{flex:1}}>
+      <Provider>
+        <Portal>
+          <FAB.Group
+            style={{
+              position: 'absolute',
+              backgroundColor: 'transparent', 
+            }}
+            open={state.open}
+            onStateChange={onStateChange}
+            icon={state.open ? 'chevron-triple-up' : 'plus'}
+            actions={[
+              { icon: 'star', label: 'Star', onPress: () => console.log('Pressed star') },
+              { icon: 'email', label: 'Email', onPress: () => console.log('Pressed email') },
+              { icon: 'bell', label: 'Remind', onPress:DatePage},
+            ]}
+              
+          />
+        </Portal>
+      </Provider>
+      </SafeAreaView>
     </SafeAreaView>
   );
 }
