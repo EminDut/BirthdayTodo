@@ -6,6 +6,7 @@ import HomeScreen from './HomeScreen';
 import AlarmScreen from './AlarmScreen';
 import DateScreen from './DateScreen';
 import { DrawerContent } from './HomeScreen';
+import AssetsScreen from './AssetsScreen';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -16,6 +17,7 @@ export default function Router() {
             <Drawer.Screen name="home" component={HomeScreen} options={{headerShown:false}}/>
             <Drawer.Screen name="AlarmScreen" component={AlarmScreen} options={{headerShown:false}}/>
             <Drawer.Screen name="DateScreen" component={DateScreen} options={{headerShown:false}}/>
+            <Drawer.Screen name="AssetsScreen" component={AssetsScreen} options={{headerShown:false}}/>
         </Drawer.Navigator>
     </NavigationContainer>
   );

@@ -133,7 +133,7 @@ export default function HomeScreen() {
     <SafeAreaView style={{flex: 1}}>
       <View
         style={{
-          backgroundColor: '#ffe4e1',
+          backgroundColor: 'transparent',
           flexDirection: 'row',
           width: '100%',
           height: '7%',
@@ -178,9 +178,9 @@ export default function HomeScreen() {
             onStateChange={onStateChange}
             icon={state.open ? 'chevron-triple-up' : 'plus'}
             actions={[
-              { icon: 'star', label: 'Star', onPress: () => console.log('Pressed star') },
-              { icon: 'email', label: 'Email', onPress: () => console.log('Pressed email') },
-              { icon: 'bell', label: 'Remind', onPress:DatePage},
+              
+              { icon: 'cake-variant', label: 'Doğum Günü Ekle',onPress:DatePage },     
+              { icon: 'bell', label: 'Alarm Ekle' },       
             ]}
               
           />

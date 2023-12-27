@@ -1,12 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, SafeAreaView, Text, StyleSheet } from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {View, SafeAreaView, Text, StyleSheet, TextInput, KeyboardAvoidingView, Platform} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useNavigation} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function DateScreen() {
+  const navigation = useNavigation();
+
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [selectedDateText, setSelectedDateText] = useState('');
+  const [inputValue, setInputValue] = useState('');
+
   const isFirstRender = useRef(true);
 
   useEffect(() => {
@@ -27,18 +34,65 @@ export default function DateScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, backgroundColor: '#FAFBFD', justifyContent: 'center', alignItems: 'center' }}>
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView
+  behavior={Platform.OS === 'ios' ? 'padding' : null}
+  style={{flex: 1}}
+>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#FAFBFD',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <View
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: 20,
+            backgroundColor: 'white',
+          }}>
+          <TouchableOpacity  style={{backgroundColor:"#FAFBFD"}}onPress={() => navigation.goBack()}>
+            <MaterialCommunityIcons color="darkblue" name="close" size={30} />
+          </TouchableOpacity>
+        </View >
+
+      <TouchableOpacity onPress={()=> navigation.navigate("AssetsScreen")}
+
+      style={{...styles.modalView,height: 250, marginTop: 40,width:320}}>
+          <MaterialCommunityIcons
+            color="darkblue"
+            name="panorama-variant-outline"
+            size={30}
+            style={{position: 'absolute', top: 205, right: 20}}/>
+      </TouchableOpacity>
+
+
+        <TextInput
+          style={{...styles.modalView, top: 20, borderRadius: 10,textAlign:"auto"}}
+          placeholder="Kimin doğum günü ? Ör. Ali"
+          value={inputValue}
+          onChangeText={text => setInputValue(text)}
+          keyboardShouldPersistTaps="handled"
+        />
+
         <Button
           mode="contained"
           icon="calendar"
           onPress={() => setOpen(true)}
-          style={{ position: 'absolute', top: 10, right: 10 }}>
-         
-          Kaydet </Button>
-      
+          style={{
+            position: 'absolute',
+            top: 20,
+            right: 15,
+            width: '30%',
+            height: '5%',
+          }}>
+          Kaydet{' '}
+        </Button>
+
         {open && (
-          <View style={styles.modalView}>
+          <View style={{...styles.modalView, marginTop: 50}}>
             <DatePicker
               mode="date"
               date={date}
@@ -56,25 +110,25 @@ export default function DateScreen() {
           </View>
         )}
         {selectedDateText && (
-          <Text style={{ marginTop: 30, fontSize: 20 }}>
+          <Text style={{marginTop: 30, fontSize: 20}}>
             Doğum Günü Tarihi: {selectedDateText}
           </Text>
         )}
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   modalView: {
-    marginTop: 300,
-    margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
     width: '80%',
-    padding: 35,
+    padding: 10,
     alignItems: 'center',
     shadowColor: '#000',
+
     shadowOffset: {
       width: 0,
       height: 2,
