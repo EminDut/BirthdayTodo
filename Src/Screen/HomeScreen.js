@@ -149,6 +149,7 @@ export default function HomeScreen() {
             color: '#26201e',
             marginTop: 5,
             marginLeft: 20,
+            fontWeight: 'bold',
           }}>
           Doğum Günleri
         </Text>

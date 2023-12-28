@@ -1,6 +1,13 @@
 import React from 'react';
-import {View, FlatList, TouchableOpacity, Image,SafeAreaView,ScrollView} from 'react-native';
+import {View, FlatList, TouchableOpacity, Image,SafeAreaView,Text} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation, useRoute } from "@react-navigation/native";
 
+
+
+
+
+const resim = require("../../assets/resim2.png")
 const image1 = require('../../assets/a1.png');
 const image2 = require('../../assets/a2.png');
 const image3 = require('../../assets/a3.png');
@@ -20,7 +27,7 @@ const image16 = require('../../assets/a16.png');
 const image17 = require('../../assets/a17.png');
 
 const data = [
-  {id: '1', source: image1},
+  {id: '1', source: resim},
   {id: '2', source: image2},
   {id: '3', source: image3},
   {id: '4', source: image4},
@@ -37,12 +44,20 @@ const data = [
   {id: '15', source: image15},
   {id: '16', source: image16},
   {id: '17', source: image17},
+  {id: "18", source: image1},
 ];
 
 const AssetsScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { selectedImage } = route.params || { selectedImage: null };
+
+
+
   const renderSeparator = () => {
-    return <View style={{ height: 5}} />; 
+    return <View style={{ height: 5 }} /> 
   };
+
 
 
   const renderItem = ({ item }) => (
@@ -51,22 +66,44 @@ const AssetsScreen = () => {
       <Image source={item.source} style={{ flex: 1, width: null, height: null, borderRadius: 5 }} resizeMode="cover" />
     </TouchableOpacity>
   );
-  
+
+
+
 
   const handleSelect = item => {
-    //yapıcam dursun !
-    console.log('Seçilen medya dosyası:', item);
+    navigation.navigate("DateScreen", { selectedImage: item.source });
   };
+  
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
-      <View style={{ flex: 1, backgroundColor: 'transparent', paddingHorizontal: 5 ,marginTop:60 }}>
+
+    <View style={{flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+     }}>
+    
+         <Text style={{fontSize:20,alignItems:"center"}}>Fotograf Galerisi</Text> 
+      <TouchableOpacity style={{position: 'absolute',left: 20, }} onPress={()=>navigation.navigate("DateScreen")}>
+            <MaterialCommunityIcons
+        name="arrow-left-thin"
+        size={30}
+        color="gray" />
+      </TouchableOpacity>
+    </View>
+      
+      <View style={{ flex: 1, backgroundColor: 'transparent', paddingHorizontal: 5 ,marginTop:40 }}>
         <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           numColumns={3}
           ItemSeparatorComponent={renderSeparator}
+          
+          
+
         />
       </View>
     </SafeAreaView>

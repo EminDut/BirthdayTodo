@@ -1,14 +1,18 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, SafeAreaView, Text, StyleSheet, TextInput, KeyboardAvoidingView, Platform} from 'react-native';
+import {View, SafeAreaView, Text, StyleSheet, TextInput, KeyboardAvoidingView, Platform,Image} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {Button} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation,useRoute} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
+
 export default function DateScreen() {
+  
   const navigation = useNavigation();
 
+  const route = useRoute();
+  const { selectedImage } = route.params || { selectedImage: null };
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [selectedDateText, setSelectedDateText] = useState('');
@@ -30,8 +34,9 @@ export default function DateScreen() {
   }, [date]);
 
   const handleSaveDate = () => {
-    setOpen(false);
-  };
+  setOpen(false);
+};
+
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -60,12 +65,16 @@ export default function DateScreen() {
 
       <TouchableOpacity onPress={()=> navigation.navigate("AssetsScreen")}
 
-      style={{...styles.modalView,height: 250, marginTop: 40,width:320}}>
+      style={{...styles.modalView,height: 300, marginTop: 30,width:320}}>
           <MaterialCommunityIcons
             color="darkblue"
             name="panorama-variant-outline"
             size={30}
-            style={{position: 'absolute', top: 205, right: 20}}/>
+            style={{position: 'absolute', top: 250, right: 20}}/>
+            {selectedImage && (
+  <Image source={selectedImage} style={{ width: '100%', height: '100%', borderRadius: 5 }} resizeMode="cover" />
+)}
+
       </TouchableOpacity>
 
 

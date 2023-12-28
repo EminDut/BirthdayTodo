@@ -36,6 +36,7 @@ local.properties
 
 # Optional npm cache directory
 .npm
+/assets/*
 
 # node.js
 #
