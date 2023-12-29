@@ -5,18 +5,13 @@ import {useNavigation} from '@react-navigation/native';
 export default function AlarmScreen() {
   const navigation = useNavigation();
 
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={{flex: 1, backgroundColor: 'pink'}}>
-        <TouchableOpacity onPress={handleGoBack}>
-          <Text>sadsadsadasdsadsadasdsa</Text>
+      <View style={{flex: 1, backgroundColor: 'pink',justifyContent:"center",alignItems:"center"}}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={{fontSize:30}}>COMİNG-SOON</Text>
         </TouchableOpacity>
       </View>
-      <View style={{flex: 1, backgroundColor: 'tomato'}}></View>
     </SafeAreaView>
   );
 }

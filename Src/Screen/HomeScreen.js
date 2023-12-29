@@ -1,12 +1,10 @@
-import {View, Text, ImageBackground,} from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, ImageBackground} from 'react-native';
+import React, {useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
-import { FAB, Portal, Provider } from 'react-native-paper';
-
-
+import {FAB, Headline, Portal, Provider} from 'react-native-paper';
 
 const iconSize = 30;
 const iconRightMargin = 15;
@@ -112,22 +110,18 @@ export const DrawerContent = () => {
   );
 };
 
-
-
-
 export default function HomeScreen() {
-  
   const navigation = useNavigation();
 
   const DatePage = () => {
-    navigation.navigate("DateScreen")
-  }
-
-
+    navigation.navigate('DateScreen');
+  };
+  const AlarmIkon = () => {
+    navigation.navigate('AlarmScreen');
+  };
 
   const [state, setState] = useState(false);
-  const onStateChange = ({ open }) => setState({ open });
-
+  const onStateChange = ({open}) => setState({open});
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -145,10 +139,10 @@ export default function HomeScreen() {
         </TouchableOpacity>
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 16,
             color: '#26201e',
             marginTop: 5,
-            marginLeft: 20,
+            marginLeft: 25,
             fontWeight: 'bold',
           }}>
           Doğum Günleri
@@ -167,26 +161,28 @@ export default function HomeScreen() {
         onPress={() => navigation.navigate('AlarmScreen')}
       />
 
-<SafeAreaView style={{flex:1}}>
-      <Provider>
-        <Portal>
-          <FAB.Group
-            style={{
-              position: 'absolute',
-              backgroundColor: 'transparent', 
-            }}
-            open={state.open}
-            onStateChange={onStateChange}
-            icon={state.open ? 'chevron-triple-up' : 'plus'}
-            actions={[
-              
-              { icon: 'cake-variant', label: 'Doğum Günü Ekle',onPress:DatePage },     
-              { icon: 'bell', label: 'Alarm Ekle' },       
-            ]}
-              
-          />
-        </Portal>
-      </Provider>
+      <SafeAreaView style={{flex: 1}}>
+        <Provider>
+          <Portal>
+            <FAB.Group
+              style={{
+                position: 'absolute',
+                backgroundColor: 'transparent',
+              }}
+              open={state.open}
+              onStateChange={onStateChange}
+              icon={state.open ? 'chevron-triple-up' : 'plus'}
+              actions={[
+                {
+                  icon: 'cake-variant',
+                  label: 'Doğum Günü Ekle',
+                  onPress: DatePage,
+                },
+                {icon: 'bell', label: 'Alarm Ekle', onPress: AlarmIkon},
+              ]}
+            />
+          </Portal>
+        </Provider>
       </SafeAreaView>
     </SafeAreaView>
   );

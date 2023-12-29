@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, FlatList, TouchableOpacity, Image,SafeAreaView,Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 
 
@@ -47,16 +47,10 @@ const data = [
   {id: "18", source: image1},
 ];
 
-const AssetsScreen = () => {
+  const AssetsScreen = () => {
+    
   const navigation = useNavigation();
-  const route = useRoute();
-  const { selectedImage } = route.params || { selectedImage: null };
 
-
-
-  const renderSeparator = () => {
-    return <View style={{ height: 5 }} /> 
-  };
 
 
 
@@ -68,9 +62,7 @@ const AssetsScreen = () => {
   );
 
 
-
-
-  const handleSelect = item => {
+  const handleSelect = (item) => {
     navigation.navigate("DateScreen", { selectedImage: item.source });
   };
   
@@ -100,10 +92,6 @@ const AssetsScreen = () => {
           renderItem={renderItem}
           keyExtractor={item => item.id}
           numColumns={3}
-          ItemSeparatorComponent={renderSeparator}
-          
-          
-
         />
       </View>
     </SafeAreaView>

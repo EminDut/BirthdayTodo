@@ -12,7 +12,9 @@ export default function DateScreen() {
   const navigation = useNavigation();
 
   const route = useRoute();
+
   const { selectedImage } = route.params || { selectedImage: null };
+
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [selectedDateText, setSelectedDateText] = useState('');
@@ -32,6 +34,8 @@ export default function DateScreen() {
       setSelectedDateText(date.toLocaleDateString('tr-TR'));
     }
   }, [date]);
+
+
 
   const handleSaveDate = () => {
   setOpen(false);
@@ -65,25 +69,24 @@ export default function DateScreen() {
 
       <TouchableOpacity onPress={()=> navigation.navigate("AssetsScreen")}
 
-      style={{...styles.modalView,height: 300, marginTop: 30,width:320}}>
+      style={{...styles.modalView,height: 320, marginTop: 30,width:320,padding:4,borderRadius: 10}}>
           <MaterialCommunityIcons
             color="darkblue"
             name="panorama-variant-outline"
             size={30}
             style={{position: 'absolute', top: 250, right: 20}}/>
-            {selectedImage && (
+           {selectedImage && (
   <Image source={selectedImage} style={{ width: '100%', height: '100%', borderRadius: 5 }} resizeMode="cover" />
-)}
+)} 
 
       </TouchableOpacity>
 
 
         <TextInput
-          style={{...styles.modalView, top: 20, borderRadius: 10,textAlign:"auto"}}
+          style={{...styles.modalView, top: 25, borderRadius: 10,textAlign:"auto"}}
           placeholder="Kimin doğum günü ? Ör. Ali"
           value={inputValue}
           onChangeText={text => setInputValue(text)}
-          keyboardShouldPersistTaps="handled"
         />
 
         <Button
@@ -91,13 +94,9 @@ export default function DateScreen() {
           icon="calendar"
           onPress={() => setOpen(true)}
           style={{
-            position: 'absolute',
-            top: 20,
-            right: 15,
-            width: '30%',
-            height: '5%',
-          }}>
-          Kaydet{' '}
+            position: 'absolute',top: 20,right: 15,width: '30%', height: '5%',}}
+            >
+          Kaydet
         </Button>
 
         {open && (
@@ -105,10 +104,7 @@ export default function DateScreen() {
             <DatePicker
               mode="date"
               date={date}
-              onConfirm={selectedDate => {
-                setDate(selectedDate);
-                handleSaveDate();
-              }}
+              onConfirm={selectedDate => {setDate(selectedDate); handleSaveDate();}}
               onCancel={() => {
                 setOpen(false);
               }}
