@@ -1,10 +1,18 @@
-import {View, Text, ImageBackground} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  Image,
+  FlatList,
+} from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
-import {FAB, Headline, Portal, Provider} from 'react-native-paper';
+import {FAB, Portal, Provider} from 'react-native-paper';
+import {PhotoContex} from './PhotoContex';
 
 const iconSize = 30;
 const iconRightMargin = 15;
@@ -110,64 +118,86 @@ export const DrawerContent = () => {
   );
 };
 
-export default function HomeScreen() {
+const HomeScreen = ({ route }) => {
   const navigation = useNavigation();
+  const { selectedPhoto } = useContext(PhotoContex);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (route.params?.selectedPhoto) {
+      const newPhoto = route.params.selectedPhoto;
+      setData(prevData => [...prevData, newPhoto]);
+    }
+  }, [route.params?.selectedPhoto]);
 
   const DatePage = () => {
     navigation.navigate('DateScreen');
   };
+
   const AlarmIkon = () => {
     navigation.navigate('AlarmScreen');
   };
 
   const [state, setState] = useState(false);
-  const onStateChange = ({open}) => setState({open});
+
+  const onStateChange = ({ open }) => setState({ open });
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View
-        style={{
-          backgroundColor: 'transparent',
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <View style={{
           flexDirection: 'row',
-          width: '100%',
-          height: '7%',
+          alignItems: 'center',
           paddingHorizontal: 10,
           paddingVertical: 10,
         }}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <MaterialCommunityIcons name="menu" size={30} color="#26201e" />
-        </TouchableOpacity>
-        <Text
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <MaterialCommunityIcons name="menu" size={30} color="#26201e" />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 16,
+              color: '#26201e',
+              marginTop: 5,
+              marginLeft: 25,
+              fontWeight: 'bold',
+            }}>
+            Doğum Günleri
+          </Text>
+        </View>
+        <MaterialCommunityIcons
+          name="bell"
+          size={30}
+          color="#26201e"
           style={{
-            fontSize: 16,
-            color: '#26201e',
-            marginTop: 5,
-            marginLeft: 25,
-            fontWeight: 'bold',
-          }}>
-          Doğum Günleri
-        </Text>
-      </View>
-
-      <MaterialCommunityIcons
-        name="bell"
-        size={30}
-        color="#26201e"
-        style={{
-          position: 'absolute',
-          right: iconRightMargin,
-          top: (40 - iconSize) / 2 + 5,
-        }}
-        onPress={() => navigation.navigate('AlarmScreen')}
-      />
-
-      <SafeAreaView style={{flex: 1}}>
+            position: 'absolute',
+            right: iconRightMargin,
+            top: (40 - iconSize) / 2 + 5,
+          }}
+          onPress={() => navigation.navigate('AlarmScreen')}
+        />
+        <FlatList
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1 }}
+          data={data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.reactModal}>
+              <Image
+                source={item}
+                style={{ width: 300, height: 300, borderRadius: 5 }}
+                resizeMode="cover"
+              />
+            </View>
+          )}
+        />
         <Provider>
           <Portal>
             <FAB.Group
               style={{
                 position: 'absolute',
-                backgroundColor: 'transparent',
+                right: 16,
+                bottom: 16,
               }}
               open={state.open}
               onStateChange={onStateChange}
@@ -178,12 +208,35 @@ export default function HomeScreen() {
                   label: 'Doğum Günü Ekle',
                   onPress: DatePage,
                 },
-                {icon: 'bell', label: 'Alarm Ekle', onPress: AlarmIkon},
+                { icon: 'bell', label: 'Alarm Ekle', onPress: AlarmIkon },
               ]}
             />
           </Portal>
         </Provider>
-      </SafeAreaView>
+      </View>
     </SafeAreaView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  reactModal: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    width: '80%',
+    padding: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+});
+
+export default HomeScreen;
