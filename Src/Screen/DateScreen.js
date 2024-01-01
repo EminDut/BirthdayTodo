@@ -8,22 +8,70 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Alert,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {Button} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import { PhotoContex } from './PhotoContex';
+import {DateContext} from './DateContext ';
+import Toast from 'react-native-toast-message';
 
 
 export default function DateScreen() {
+  //contex in başlangıcı state leri ekledik...
+  const {selectedImage, setSelectedImage} = useContext(DateContext);
+  console.log('Selected Image:', selectedImage);
 
   const navigation = useNavigation();
-  const { selectedPhoto } = useContext(PhotoContex);
 
-  const handleSelectPhoto = {}
+  //create contex kullandık....
+
+  const selectImage = image => {
+    setSelectedImage(image);
+  };
+
+
   
+  const handleSave = () => {
+    if (!inputValue) {
+      Toast.show({
+        type: 'error',
+        text1: 'Hata',
+        text2: 'Lütfen doğum günü için bir ad girin!',
+        visibilityTime:1500
+      });
+      return;
+    }
+    if (!selectedDateText) {
+      Toast.show({
+        type: 'error',
+        text1: 'Hata',
+        text2: 'Lütfen doğum günü tarihini seçin!',
+        visibilityTime:1500
+      });
+      return;
+    }
+    if (!selectedImage) {
+      Toast.show({
+        type: 'error',
+        text1: 'Hata',
+        text2: 'Lütfen bir resim seçin!',
+        visibilityTime:1500
+
+      });
+      return;
+    }
+    navigation.navigate('HomeScreen', {
+      selectedImage,
+      selectedDateText,
+      inputValue,
+    });
+  };
+
+  
+
 
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -44,17 +92,6 @@ export default function DateScreen() {
       setSelectedDateText(date.toLocaleDateString('tr-TR'));
     }
   }, [date]);
-
-  const handleSaveDate = () => {
-    if (selectedPhoto) {
-      setOpen(true);}
-      else{
-      alert('Lütfen bir fotoğraf seçin.');}
-    
-    navigation.navigate('HomeScreen', { selectedPhoto });
-
-
-  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -99,13 +136,14 @@ export default function DateScreen() {
               style={{position: 'absolute', top: 270, right: 20}}
             />
 
-            <Image
-              source = {selectedPhoto || {}}
-              style={{width: '100%', height: '100%', borderRadius: 5}}
-              resizeMode="cover"
-            />
+            {selectedImage && (
+              <Image
+                style={{width: 300, height: 300, resizeMode: 'cover'}}
+                source={selectedImage}
+              />
+            )}
           </TouchableOpacity>
-
+            
           <TextInput
             style={{
               ...styles.modalView,
@@ -115,11 +153,22 @@ export default function DateScreen() {
             }}
             placeholder="Kimin doğum günü ? Ör. Ali"
             value={inputValue}
-            onChangeText={text => setInputValue(text)}
-          />
+            onChangeText={text => {
+              if (text.length >= 15){
+                Toast.show({
+                  type:"info",
+                  text1:"uyarı",
+                  text2:"İsim 15 karakterden fazla olmamalıdır :(",
+                  visibilityTime:1500
+                });
+                return;
+              }
+              setInputValue(text)
+
+            }}/>
 
           <Button
-          onPress={handleSaveDate}
+            onPress={handleSave}
             mode="contained"
             icon="calendar"
             style={{
@@ -131,6 +180,7 @@ export default function DateScreen() {
             }}>
             Kaydet
           </Button>
+          <Toast/>
 
           {open && (
             <View style={{...styles.modalView, marginTop: 50}}>
@@ -139,7 +189,7 @@ export default function DateScreen() {
                 date={date}
                 onConfirm={selectedDate => {
                   setDate(selectedDate);
-                  handleSaveDate();
+                  selectImage();
                 }}
                 onCancel={() => {
                   setOpen(false);

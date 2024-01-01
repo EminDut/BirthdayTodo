@@ -10,12 +10,8 @@ import React, {useState, useContext, useEffect} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {FAB, Portal, Provider} from 'react-native-paper';
-import {PhotoContex} from './PhotoContex';
-
-const iconSize = 30;
-const iconRightMargin = 15;
 
 export const DrawerContent = () => {
   return (
@@ -118,17 +114,13 @@ export const DrawerContent = () => {
   );
 };
 
-const HomeScreen = ({ route }) => {
-  const navigation = useNavigation();
-  const { selectedPhoto } = useContext(PhotoContex);
-  const [data, setData] = useState([]);
+const HomeScreen = () => {
+  const route = useRoute();
+  const {selectedImage, selectedDateText, inputValue,} = route.params || {};
 
-  useEffect(() => {
-    if (route.params?.selectedPhoto) {
-      const newPhoto = route.params.selectedPhoto;
-      setData(prevData => [...prevData, newPhoto]);
-    }
-  }, [route.params?.selectedPhoto]);
+  const iconSize = 30;
+  const iconRightMargin = 15;
+  const navigation = useNavigation();
 
   const DatePage = () => {
     navigation.navigate('DateScreen');
@@ -140,17 +132,19 @@ const HomeScreen = ({ route }) => {
 
   const [state, setState] = useState(false);
 
-  const onStateChange = ({ open }) => setState({ open });
+  const onStateChange = ({open}) => setState({open});
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingHorizontal: 10,
-          paddingVertical: 10,
-        }}>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={{flex: 1,backgroundColor:"pink"}}>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 10,
+            paddingVertical: 10,
+          }}>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <MaterialCommunityIcons name="menu" size={30} color="#26201e" />
           </TouchableOpacity>
@@ -158,7 +152,6 @@ const HomeScreen = ({ route }) => {
             style={{
               fontSize: 16,
               color: '#26201e',
-              marginTop: 5,
               marginLeft: 25,
               fontWeight: 'bold',
             }}>
@@ -176,28 +169,35 @@ const HomeScreen = ({ route }) => {
           }}
           onPress={() => navigation.navigate('AlarmScreen')}
         />
-        <FlatList
-          style={{ flex: 1 }}
-          contentContainerStyle={{ flexGrow: 1 }}
-          data={data}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.reactModal}>
-              <Image
-                source={item}
-                style={{ width: 300, height: 300, borderRadius: 5 }}
-                resizeMode="cover"
-              />
-            </View>
-          )}
-        />
+
+
+          {/* İTEMLERİ BURAYA ALIYORUZ */}
+
+
+      <View style={{...styles.reactView,height:200,width:"95%",marginTop:40,marginHorizontal:10,backgroundColor:"white"}}>
+        {selectedDateText && (
+          <Text style={{ fontSize:20,position:"absolute",left:200,top:20}}>{selectedDateText}</Text>
+        )}
+        {inputValue && (
+          <Text style={{ fontSize: 20,position:"absolute",left:200,top:50}}>{inputValue}</Text>
+        )}
+
+          <View style = {{ ...styles.reactView,width:180,height:180,backgroundColor:"white",borderRadius:20,position: 'absolute',left:10,bottom:10}}>
+            
+           <TouchableOpacity>
+                {selectedImage && (
+                <Image style={{ ...styles.ofsetView,width:185,height:185,bottom:13}} source={selectedImage} />)}        
+           </TouchableOpacity>
+          </View>
+      </View>
+
+      
         <Provider>
           <Portal>
             <FAB.Group
               style={{
                 position: 'absolute',
-                right: 16,
-                bottom: 16,
+             
               }}
               open={state.open}
               onStateChange={onStateChange}
@@ -208,7 +208,7 @@ const HomeScreen = ({ route }) => {
                   label: 'Doğum Günü Ekle',
                   onPress: DatePage,
                 },
-                { icon: 'bell', label: 'Alarm Ekle', onPress: AlarmIkon },
+                {icon: 'bell', label: 'Alarm Ekle', onPress: AlarmIkon},
               ]}
             />
           </Portal>
@@ -218,25 +218,41 @@ const HomeScreen = ({ route }) => {
   );
 };
 
+export default HomeScreen;
+
+
 const styles = StyleSheet.create({
-  reactModal: {
+  reactView: {
     backgroundColor: 'white',
     borderRadius: 20,
     width: '80%',
     padding: 10,
     alignItems: 'center',
     shadowColor: '#000',
+
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 2,
     },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-    elevation: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
+  ofsetView: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    width: '80%',
+    padding: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+
+  }
 });
 
-export default HomeScreen;

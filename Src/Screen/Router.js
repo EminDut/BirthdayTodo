@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useRef} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -7,14 +7,17 @@ import AlarmScreen from './AlarmScreen';
 import DateScreen from './DateScreen';
 import { DrawerContent } from './HomeScreen';
 import AssetsScreen from './AssetsScreen';
-import { PhotoContexProvider } from './PhotoContex';
+import { DateProvider } from './DateContext ';
 
-const Stack = createNativeStackNavigator();
+
+
 const Drawer = createDrawerNavigator();
 
 export default function Router() {
+
   return (
-    <PhotoContexProvider>
+    
+    <DateProvider>
       <NavigationContainer>
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props}/> }>
             <Drawer.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false}}/>
@@ -23,6 +26,7 @@ export default function Router() {
             <Drawer.Screen name="AssetsScreen" component={AssetsScreen} options={{headerShown:false}}/>
         </Drawer.Navigator>
       </NavigationContainer>
-    </PhotoContexProvider>
+    </DateProvider>
+  
   );
 }
