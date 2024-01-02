@@ -1,4 +1,4 @@
-import React, {useContext,createContext} from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   FlatList,
@@ -11,7 +11,10 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import {DateContext} from './DateContext ';
-import DateScreen from './DateScreen';
+import { launchImageLibrary } from 'react-native-image-picker';
+import Toast from 'react-native-toast-message';
+
+
 
 const photos = [
   require('../../assets/resim2.png'),
@@ -21,7 +24,6 @@ const photos = [
   require('../../assets/a5.png'),
   require('../../assets/a6.png'),
   require('../../assets/a7.png'),
-  require('../../assets/a8.png'),
   require('../../assets/a9.png'),
   require('../../assets/a10.png'),
   require('../../assets/a11.png'),
@@ -35,21 +37,8 @@ const photos = [
   require('../../assets/a19.png'),
   require('../../assets/a24.png'),
   require('../../assets/a26.png'),
-  require('../../assets/a29.png'),
-  require('../../assets/a34.png'),
-  require('../../assets/a35.png'),
-  require('../../assets/a36.png'),
+
   
-  require('../../assets/a38.png'),
-  require('../../assets/a39.png'),
-  require('../../assets/a40.png'),
-  require('../../assets/a41.png'),
-  require('../../assets/a42.png'),
-  require('../../assets/a43.png'),
-  require('../../assets/a44.png'),
-  require('../../assets/a45.png'),
-  require('../../assets/a46.png'),
-  require('../../assets/a47.png'),
 
 ];
 
@@ -58,15 +47,39 @@ const AssetsScreen = () => {
   const { setSelectedImage } = useContext(DateContext);
   const navigation = useNavigation();
 
-  const selectImage = (image) => {
-    setSelectedImage(image);
-    navigation.navigate('DateScreen');
+  const handleImageSelection = (image) => {
+    if (image === require('../../assets/resim2.png')) {
+      launchImageLibrary({ mediaType: 'photo' }, (response) => {
+        if (response.didCancel) {
+        } else if (response.error) {
+          Toast.show({
+            type:"error",
+            text1:"Hata",
+            text2:"Galeri Açılırken Bir Sorunla Karşılaştı Lütfen Tekrar Deneyin"
+          })
+        } else if (response.assets && response.assets.length > 0) {
+          const photoUri = response.assets[0].uri;
+          if (photoUri) {
+            setSelectedImage({ uri: photoUri });
+            navigation.navigate('DateScreen');
+          } else {
+          }
+        }
+      });
+    } else {
+
+      setSelectedImage(image);
+      navigation.navigate('DateScreen');
+    }
   };
+  
+  
+
   
 
   const renderItem = ({item}) => (
     <TouchableOpacity
-      onPress={() => selectImage(item) }
+      onPress={() => handleImageSelection(item) } 
       style={{flex: 1, aspectRatio: 1, marginHorizontal: 2, marginBottom: 5}}>
       <Image
         source={item}

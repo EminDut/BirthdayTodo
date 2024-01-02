@@ -18,10 +18,10 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {DateContext} from './DateContext ';
 import Toast from 'react-native-toast-message';
 
-
 export default function DateScreen() {
   //contex in başlangıcı state leri ekledik...
-  const {selectedImage, setSelectedImage,setBirthdayList } = useContext(DateContext);
+  const {selectedImage, setSelectedImage, setBirthdayList} =
+    useContext(DateContext);
 
   console.log('Selected Image:', selectedImage);
 
@@ -33,15 +33,13 @@ export default function DateScreen() {
     setSelectedImage(image);
   };
 
-
-  
   const handleSave = () => {
     if (!inputValue) {
       Toast.show({
         type: 'error',
         text1: 'Hata',
         text2: 'Lütfen doğum günü için bir ad girin!',
-        visibilityTime:1500
+        visibilityTime: 1500,
       });
       return;
     }
@@ -50,7 +48,7 @@ export default function DateScreen() {
         type: 'error',
         text1: 'Hata',
         text2: 'Lütfen doğum günü tarihini seçin!',
-        visibilityTime:1500
+        visibilityTime: 1500,
       });
       return;
     }
@@ -59,8 +57,7 @@ export default function DateScreen() {
         type: 'error',
         text1: 'Hata',
         text2: 'Lütfen bir resim seçin!',
-        visibilityTime:1500
-
+        visibilityTime: 1500,
       });
       return;
     }
@@ -72,16 +69,13 @@ export default function DateScreen() {
     };
 
     setBirthdayList(prevList => [...prevList, newBirthday]);
-    
+
     navigation.navigate('HomeScreen', {
       selectedImage,
       selectedDateText,
       inputValue,
     });
   };
-
-  
-
 
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -129,14 +123,14 @@ export default function DateScreen() {
             </TouchableOpacity>
           </View>
 
-      <TouchableOpacity
+          <TouchableOpacity
             onPress={() => navigation.navigate('AssetsScreen')}
             style={{
               ...styles.modalView,
               height: 310,
-              width:310,
+              width: 310,
               marginTop: 60,
-              marginVertical:24,
+              marginVertical: 24,
               padding: 5,
               borderRadius: 15,
             }}>
@@ -149,12 +143,16 @@ export default function DateScreen() {
 
             {selectedImage && (
               <Image
-                style={{width: 300, height: 300, resizeMode: 'cover',borderRadius:10}}
+                style={{
+                  width: 300,
+                  height: 300,
+                  resizeMode: 'cover',
+                  borderRadius: 10,
+                }}
                 source={selectedImage}
               />
             )}
-
-      </TouchableOpacity>   
+          </TouchableOpacity>
           <TextInput
             style={{
               ...styles.modalView,
@@ -165,18 +163,18 @@ export default function DateScreen() {
             placeholder="Kimin doğum günü ? Ör. Ali"
             value={inputValue}
             onChangeText={text => {
-              if (text.length >= 15){
+              if (text.length >= 15) {
                 Toast.show({
-                  type:"info",
-                  text1:"uyarı",
-                  text2:"İsim 15 karakterden fazla olmamalıdır :(",
-                  visibilityTime:1500
+                  type: 'info',
+                  text1: 'uyarı',
+                  text2: 'İsim 15 karakterden fazla olmamalıdır :(',
+                  visibilityTime: 1500,
                 });
                 return;
               }
-              setInputValue(text)
-
-            }}/>
+              setInputValue(text);
+            }}
+          />
 
           <Button
             onPress={handleSave}
@@ -191,7 +189,7 @@ export default function DateScreen() {
             }}>
             Kaydet
           </Button>
-          <Toast/>
+          <Toast />
 
           {open && (
             <View style={{...styles.modalView, marginTop: 50}}>
@@ -237,6 +235,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 3,
   },
 });
