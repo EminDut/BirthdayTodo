@@ -21,7 +21,8 @@ import Toast from 'react-native-toast-message';
 
 export default function DateScreen() {
   //contex in başlangıcı state leri ekledik...
-  const {selectedImage, setSelectedImage} = useContext(DateContext);
+  const {selectedImage, setSelectedImage,setBirthdayList } = useContext(DateContext);
+
   console.log('Selected Image:', selectedImage);
 
   const navigation = useNavigation();
@@ -63,6 +64,15 @@ export default function DateScreen() {
       });
       return;
     }
+    const newBirthday = {
+      id: Date.now().toString(),
+      name: inputValue,
+      date: selectedDateText,
+      image: selectedImage,
+    };
+
+    setBirthdayList(prevList => [...prevList, newBirthday]);
+    
     navigation.navigate('HomeScreen', {
       selectedImage,
       selectedDateText,
@@ -119,15 +129,16 @@ export default function DateScreen() {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
+      <TouchableOpacity
             onPress={() => navigation.navigate('AssetsScreen')}
             style={{
               ...styles.modalView,
-              height: 320,
-              marginTop: 70,
-              width: 320,
-              padding: 4,
-              borderRadius: 10,
+              height: 310,
+              width:310,
+              marginTop: 60,
+              marginVertical:24,
+              padding: 5,
+              borderRadius: 15,
             }}>
             <MaterialCommunityIcons
               color="darkblue"
@@ -138,16 +149,16 @@ export default function DateScreen() {
 
             {selectedImage && (
               <Image
-                style={{width: 300, height: 300, resizeMode: 'cover'}}
+                style={{width: 300, height: 300, resizeMode: 'cover',borderRadius:10}}
                 source={selectedImage}
               />
             )}
-          </TouchableOpacity>
-            
+
+      </TouchableOpacity>   
           <TextInput
             style={{
               ...styles.modalView,
-              top: 25,
+              top: 20,
               borderRadius: 10,
               textAlign: 'auto',
             }}

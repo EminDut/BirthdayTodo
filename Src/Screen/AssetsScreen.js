@@ -33,19 +33,24 @@ const photos = [
   require('../../assets/a17.png'),
   require('../../assets/a18.png'),
   require('../../assets/a19.png'),
-  require('../../assets/a20.png'),
-  require('../../assets/a21.png'),
-  require('../../assets/a22.png'),
-  require('../../assets/a23.png'),
   require('../../assets/a24.png'),
-  require('../../assets/a25.png'),
   require('../../assets/a26.png'),
   require('../../assets/a29.png'),
-  require('../../assets/a31.png'),
   require('../../assets/a34.png'),
   require('../../assets/a35.png'),
   require('../../assets/a36.png'),
-  require('../../assets/a37.png'),
+  
+  require('../../assets/a38.png'),
+  require('../../assets/a39.png'),
+  require('../../assets/a40.png'),
+  require('../../assets/a41.png'),
+  require('../../assets/a42.png'),
+  require('../../assets/a43.png'),
+  require('../../assets/a44.png'),
+  require('../../assets/a45.png'),
+  require('../../assets/a46.png'),
+  require('../../assets/a47.png'),
+
 ];
 
 const AssetsScreen = () => {
